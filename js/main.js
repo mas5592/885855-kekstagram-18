@@ -50,7 +50,7 @@ var generateData = function (number) {
   var result = [];
   for (var i = 1; i <= number; i++) {
     result.push({
-      url: generateUrl(i),
+      url: generateUrl(i + 1),
       likes: getRandom(15, 200),
       comments: generateComments(getRandom(1, 10), USER_COMMENTS, USER_NAME)
     });
@@ -80,7 +80,6 @@ var ESC_KEYCODE = 27;
 var formImgEditing = document.querySelector('.img-upload__overlay');// Форма редактирования изображения
 var imgUploadInput = document.querySelector('.img-upload__input');// input изначальное состояние поля для загрузки изображения
 var btnCloseImgEditing = formImgEditing.querySelector('.img-upload__cancel');// Кнопка для закрытия формы редактирования изображения
-
 
 // Открытие окна с загруженным фото
 var openPopup = function () {
