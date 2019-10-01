@@ -85,13 +85,18 @@ var textDescription = document.querySelector('.text_description');
 var openPopup = function () {
   formImgEditing.classList.remove('hidden');
   effectLevel.classList.add('hidden');
+  scaleControlBigger.addEventListener('click', onScaleControlBiggerClick);
+  scaleControlSmaller.addEventListener('click', onScaleControlSmallerClick);
   settingNone(); // Сбрасывает эффект значения при вторичном открытии изображения
   document.addEventListener('keydown', onEscPress);
 };
 // Закрытие окна с загруженным фото
 var closePopup = function () {
   formImgEditing.classList.add('hidden');
+  scaleControlBigger.addEventListener('click', onScaleControlBiggerClick);
+  scaleControlSmaller.addEventListener('click', onScaleControlSmallerClick);
   document.removeEventListener('keydown', onEscPress);
+  resetScaleControlValue();
 };
 // Закрытие с помощью esc
 var onEscPress = function (evt) {
@@ -112,30 +117,34 @@ var imgPreview = formImgEditing.querySelector('.img-upload__preview');// Пре�
 var scaleControlSmaller = formImgEditing.querySelector('.scale__control--smaller');// Уменьшение размера изображения
 var scaleControlBigger = formImgEditing.querySelector('.scale__control--bigger');// Увеличение размера изображения
 var scaleControlValue = formImgEditing.querySelector('.scale__control--value');// value 55 пр.
-var scaleValue = {
-  min: 25,
-  max: 100,
-  step: 25
+
+// Преобразование цифрового значения в строку с процентами
+var changeSizePreview = function (value) {
+  imgPreview.style.transform = 'scale' + '(' + value / 100 + ')';
 };
 
-scaleControlValue.value = scaleValue.max + '%';
-
-var imgScarle = function (directionScale) {
-  var scale = parseInt(scaleControlValue.value, 10);
-  scale = scale + (scaleValue.step * directionScale);
-  if (scale >= scaleValue.min && scale <= scaleValue.max) {
-    scaleControlValue.value = scale + '%';
-    imgPreview.style.transform = 'scale(' + scale / 100 + ')';
+// Сброс масштаба Preview
+var resetScaleControlValue = function () {
+  scaleControlValue.value = '100%';
+  changeSizePreview(100);
+};
+// Увеличение или уменьшение масштаба
+var changeImgScale = function (directionScale) {
+  var currentControlValue = parseInt(scaleControlValue.value, 10);
+  if (currentControlValue + directionScale <= 100 && currentControlValue + directionScale >= 25) {
+    var result = currentControlValue + directionScale;
+    changeSizePreview(result);
+    scaleControlValue.value = result + '%';
   }
 };
 
-scaleControlSmaller.addEventListener('click', function () {
-  imgScarle(-1);
-});
+var onScaleControlBiggerClick = function () {
+  changeImgScale(25);
+};
 
-scaleControlBigger.addEventListener('click', function () {
-  imgScarle(1);
-});
+var onScaleControlSmallerClick = function () {
+  changeImgScale(-25);
+};
 // Применение эффектов
 var effectNames = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];// Название эффектов
 var effectRadio = document.querySelectorAll('.effects__radio');// input наложения эффекта на изображение
@@ -202,9 +211,12 @@ for (var j = 0; j < effectRadio.length; j++) {
 
 // Оживление ползунка
 var effectLevelDepth = document.querySelector('.effect-level__depth');
-var effectLevelLine = document.querySelector('.effect-level__line');
 var effectLevelValue = document.querySelector('.effect-level__value');
 var WIDTH_SCALE = 450;
+
+var getEffectLevl = function (level) {
+  effectsСatalog[effectsСatalogFilter](level / 100);
+};
 
 effectLevelPin.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
@@ -225,14 +237,13 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
     };
 
     var movePin = effectLevelPin.offsetLeft - shift.x;
-    var coordsPin = movePin + 'px';
 
     if (movePin >= 0 && movePin <= WIDTH_SCALE) {
-      effectLevelPin.style.left = coordsPin;
-      effectLevelDepth.style.width = coordsPin;
-      var slidereffectLevel = effectLevelPin.offsetLeft / effectLevelLine.offsetWidth;
-      effectsСatalog[effectsСatalogFilter](slidereffectLevel);
-      effectLevelValue.value = slidereffectLevel * 100;
+      var coordsPercent = movePin / WIDTH_SCALE;
+      var valuePin = coordsPercent * FILTER_PERCENT;
+
+      getSliderValue(valuePin);
+      getEffectLevl(valuePin);
     }
   };
 
