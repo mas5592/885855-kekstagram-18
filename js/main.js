@@ -85,8 +85,6 @@ var textDescription = document.querySelector('.text_description');
 var openPopup = function () {
   formImgEditing.classList.remove('hidden');
   effectLevel.classList.add('hidden');
-  scaleControlBigger.addEventListener('click', onScaleControlBiggerClick);
-  scaleControlSmaller.addEventListener('click', onScaleControlSmallerClick);
   settingNone(); // Сбрасывает эффект значения при вторичном открытии изображения
   document.addEventListener('keydown', onEscPress);
   hashtagsInput.addEventListener('change', onValidateFormHashtag);
@@ -94,11 +92,7 @@ var openPopup = function () {
 // Закрытие окна с загруженным фото
 var closePopup = function () {
   formImgEditing.classList.add('hidden');
-  scaleControlBigger.addEventListener('click', onScaleControlBiggerClick);
-  scaleControlSmaller.addEventListener('click', onScaleControlSmallerClick);
   document.removeEventListener('keydown', onEscPress);
-  resetScaleControlValue();
-  hashtagsInput.addEventListener('change', onValidateFormHashtag);
 };
 // Закрытие с помощью esc
 var onEscPress = function (evt) {
@@ -119,34 +113,29 @@ var imgPreview = formImgEditing.querySelector('.img-upload__preview');// Пре�
 var scaleControlSmaller = formImgEditing.querySelector('.scale__control--smaller');// Уменьшение размера изображения
 var scaleControlBigger = formImgEditing.querySelector('.scale__control--bigger');// Увеличение размера изображения
 var scaleControlValue = formImgEditing.querySelector('.scale__control--value');// value 55 пр.
+var MAX_SIZE = 100;
+var MIN_SIZE = 25;
 
-// Преобразование цифрового значения в строку с процентами
-var changeSizePreview = function (value) {
-  imgPreview.style.transform = 'scale' + '(' + value / 100 + ')';
-};
+scaleControlValue.value = '100%';
 
-// Сброс масштаба Preview
-var resetScaleControlValue = function () {
-  scaleControlValue.value = '100%';
-  changeSizePreview(100);
-};
-// Увеличение или уменьшение масштаба
-var changeImgScale = function (directionScale) {
-  var currentControlValue = parseInt(scaleControlValue.value, 10);
-  if (currentControlValue + directionScale <= 100 && currentControlValue + directionScale >= 25) {
-    var result = currentControlValue + directionScale;
-    changeSizePreview(result);
-    scaleControlValue.value = result + '%';
+scaleControlBigger.addEventListener('click', function () {
+  scaleControlValue.value = parseInt(scaleControlValue.value, 10) + 25;
+  scaleControlValue.value = scaleControlValue.value <= MAX_SIZE ? scaleControlValue.value + '%' : MAX_SIZE + '%';
+  imgPreview.style.transform = 'scale(' + parseInt(scaleControlValue.value, 10) / 100 + ')';
+});
+
+scaleControlSmaller.addEventListener('click', function () {
+  scaleControlValue.value = parseInt(scaleControlValue.value, 10) - 25;
+
+  if (scaleControlValue.value >= MIN_SIZE) {
+    scaleControlValue.value = scaleControlValue.value + '%';
+  } else {
+    scaleControlValue.value = 25 + '%';
   }
-};
 
-var onScaleControlBiggerClick = function () {
-  changeImgScale(25);
-};
+  imgPreview.style.transform = 'scale(' + parseInt(scaleControlValue.value, 10) / 100 + ')';
+});
 
-var onScaleControlSmallerClick = function () {
-  changeImgScale(-25);
-};
 // Применение эффектов
 var effectNames = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];// Название эффектов
 var effectRadio = document.querySelectorAll('.effects__radio');// input наложения эффекта на изображение
