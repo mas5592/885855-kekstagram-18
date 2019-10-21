@@ -20,12 +20,22 @@
     'Люпита',
     'Вашингтон'];
   var pictures = document.querySelector('.pictures');
-  var template = document.querySelector('#picture').content.querySelector('.picture');
+  var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+
+  // Получаем изображение
+  var generatePicture = function (dataPicture) {
+    var picture = pictureTemplate.cloneNode(true);
+    picture.querySelector('.picture__img').src = dataPicture.url;
+    picture.querySelector('.picture__likes').textContent = dataPicture.likes;
+    picture.querySelector('.picture__comments').textContent = dataPicture.comments.length;
+    return picture;
+  };
 
   // Генерируем адрес картинки
   var generateUrl = function (number) {
     return 'photos/' + number + '.jpg';
   };
+
   // Генерируем список комментариев, оставленных другими пользователями под фотографией
   var generateComments = function (number, textData, nameData) {
     var result = [];
@@ -54,16 +64,20 @@
     }
     return result;
   };
-  // Получаем изображение
-  var generatePicture = function (dataPicture) {
-    var picture = template.cloneNode(true);
-    picture.querySelector('.picture__img').src = dataPicture.url;
-    picture.querySelector('.picture__likes').textContent = dataPicture.likes;
-    picture.querySelector('.picture__comments').textContent = dataPicture.comments.length;
-    return picture;
+
+
+  // Убираем  изображение
+  var clearPicture = function () {
+    if (pictures.children.length > 1) {
+      var picture = document.querySelectorAll('.picture');
+      for (var i = 0; i < picture.length; i++) {
+        pictures.removeChild(picture[i]);
+      }
+    }
   };
   // Выводим результаты
   var renderPictures = function (dataPicture) {
+    clearPicture();
     var fragment = document.createDocumentFragment();
     for (var i = 0; i <= dataPicture.length - 1; i++) {
       fragment.appendChild(generatePicture(dataPicture[i]));
