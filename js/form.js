@@ -10,29 +10,36 @@
 
   var openPopup = function () {
     formImgEditing.classList.remove('hidden');
-    filterList.addEventListener('change', window.filters.filterHandler);
-    filterList.addEventListener('keydown', window.filters.filterListKeydownHandler);
-    window.filters.filterRange.classList.add('hidden');
-    window.filters.effectLevelPin.addEventListener('mousedown', window.filters.effectLevelPinMouseDownHandler);
-    document.addEventListener('keydown', onEscPress);
-    window.validation.hashtagsInput.addEventListener('change', window.validation.onValidateFormHashtag);
-    window.filters.editorFormOnDefault();
-  };
+    filterList.addEventListener('change', window.filters.onEffectChange);
 
+
+    document.addEventListener('keydown', onEscPress);
+    window.filters.editorFormOnDefault();
+    window.validation.hashtagsInput.addEventListener('change', window.validation.onValidateFormHashtag);
+    window.hashtagValidation.handlePopupOpening();
+  };
 
   var closePopup = function () {
     formImgEditing.classList.add('hidden');
-    imgUploadInput.value = null;
-    filterList.removeEventListener('change', window.filters.filterHandler);
-
-    window.filters.effectLevelPin.removeEventListener('mousedown', window.filters.effectLevelPinMouseDownHandler);
-
     document.removeEventListener('keydown', onEscPress);
+    filterList.removeEventListener('click', window.filters.onEffectChange);
+    window.validation.hashtagsInput.removeEventListener('change', window.validation.onValidateFormHashtag);
+    window.scale.resetScaleControlValue();
+  };
 
+  var getActiveElement = function () {
+    var activeElement;
+    if (document.activeElement === textDescription) {
+      activeElement = textDescription;
+    }
+    if (document.activeElement === window.validation.hashtagsInput) {
+      activeElement = window.validation.hashtagsInput;
+    }
+    return activeElement;
   };
 
   var onEscPress = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEYCODE && document.activeElement !== textDescription && document.activeElement !== window.validation.hashtagsInput) {
+    if (evt.keyCode === window.util.ESC_KEYCODE && document.activeElement !== getActiveElement()) {
       closePopup();
     }
   };

@@ -2,65 +2,50 @@
 
 (function () {
   var URL = 'https://js.dump.academy/kekstagram';
-  var TIMEOUT = 10000;
 
-  var load = function (onLoad, onError) {
+  var load = function (onSuccess) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.timeout = TIMEOUT;
-    xhr.open('GET', URL);
-    xhr.send();
 
     xhr.addEventListener('load', function () {
-      switch (xhr.status) {
-        case 200:
-          onLoad(xhr.response);
-          break;
-        case 304:
-          onError();
-          break;
-        case 404:
-          onError();
-          break;
-        case 500:
-          onError();
-          break;
+      if (xhr.status === 200) {
+        onSuccess(xhr.response);
       }
     });
+
+    xhr.timeout = 10000;
+
+    xhr.open('GET', URL + '/data');
+    xhr.send();
   };
 
-  var upLoad = function (onLoad, onError, data) {
+  var save = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.timeout = TIMEOUT;
-    xhr.send(data);
+    xhr.timeout = 30000;
+
     xhr.addEventListener('load', function () {
-      switch (xhr.status) {
-        case 200:
-          onLoad(xhr.response);
-          break;
-        case 304:
-          onError('к сожалению, программа времмено неработает...');
-          break;
-        case 404:
-          onError('к сожалению, запрашиваемая страница не найдена...');
-          break;
-        case 500:
-          onError('к сожалению, произошла ошибка сервера...');
-          break;
+      if (xhr.status === 200) {
+        onLoad();
+      } else {
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
     xhr.addEventListener('error', function () {
-      onError('Ошибка соединения!');
+      onError('Произошла ошибка соединения');
     });
     xhr.addEventListener('timeout', function () {
-      onError('Привышенно время ожидания, запрос не завершится за ' + xhr.timeout + 'мс');
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
+
+    xhr.timeout = 1000;
+
     xhr.open('POST', URL);
+    xhr.send(data);
   };
 
   window.backend = {
     load: load,
-    upLoad: upLoad,
+    save: save
   };
 })();
