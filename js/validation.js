@@ -5,17 +5,16 @@
   var hashtagsInput = document.querySelector('.text__hashtags');
   var MAX_LENGTH_HASHTAG = 20;
   var MAX_NUMBER_HASHTAG = 5;
-  var MIN_NUMBER_HASHTAG = 2;
 
   var checkFirstSymbol = function (hashtag) {
     return hashtag.some(function (it) {
-      return it[0] !== '#';
+      return it.charAt(0) !== '#';
     });
   };
 
   var checkMinLength = function (str) {
     return str.some(function (it) {
-      return it.length < MIN_NUMBER_HASHTAG || it.length > MAX_NUMBER_HASHTAG;
+      return (it === '#') ? true : false;
     });
   };
 

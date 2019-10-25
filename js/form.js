@@ -7,16 +7,12 @@
   var textDescription = document.querySelector('.text_description');
   var filterList = document.querySelector('.effects__list');
 
-
   var openPopup = function () {
     formImgEditing.classList.remove('hidden');
     filterList.addEventListener('change', window.filters.onEffectChange);
-
-
     document.addEventListener('keydown', onEscPress);
     window.filters.editorFormOnDefault();
     window.validation.hashtagsInput.addEventListener('change', window.validation.onValidateFormHashtag);
-    window.hashtagValidation.handlePopupOpening();
   };
 
   var closePopup = function () {
