@@ -10,7 +10,7 @@
   var MAX_SCALE = 100;
 
   var resetScaleControlValue = function () {
-    scaleControlValue.value = ('value', '100%');
+    scaleControlValue.value = '100%';
     resizeImage(100);
   };
 

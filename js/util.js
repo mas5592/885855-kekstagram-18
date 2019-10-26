@@ -21,6 +21,12 @@
     }
   };
 
+  var removeChildElements = function (elements, block) {
+    for (var i = 0; i < elements.length; i++) {
+      block.removeChild(elements[i]);
+    }
+  };
+
   var mixArray = function (array) {
     for (var i = array.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -31,12 +37,36 @@
     return array;
   };
 
+  var removeClassBlockArray = function (elements, cssClass) {
+    elements.forEach(function (element) {
+      element.classList.remove(cssClass);
+    });
+  };
+  var DEBOUNCE_INTERVAL = 500;
+
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.util = {
     ESC_KEYCODE: ESC_KEYCODE,
     getRandom: getRandom,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     addEventHandler: addEventHandler,
-    mixArray: mixArray
+    removeChildElements: removeChildElements,
+    removeClassBlockArray: removeClassBlockArray,
+    mixArray: mixArray,
+    debounce: debounce
   };
 })();
