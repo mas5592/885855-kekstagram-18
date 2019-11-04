@@ -1,24 +1,24 @@
 'use strict';
 
 (function () {
-
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureImg = bigPicture.querySelector('.big-picture__img img');
-  var bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
   var likesCount = bigPicture.querySelector('.likes-count');
   var commentsCount = bigPicture.querySelector('.comments-count');
   var socialCaption = bigPicture.querySelector('.social__caption');
+  var bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
   var socialComments = bigPicture.querySelector('.social__comments');
   var socialCommentCount = bigPicture.querySelector('.social__comment-count');
   var commentsLoader = bigPicture.querySelector('.comments-loader');
+  var pictureComments;
 
   var openBigPicture = function (picture) {
     dataBigPicture(picture);
     document.addEventListener('keydown', onBigPictureEscPress);
     bigPictureCancel.addEventListener('click', onBigPictureCancelClick);
-    socialCommentCount.classList.add('visually-hidden');
-    commentsLoader.classList.add('visually-hidden');
+    commentsLoader.addEventListener('click', onShowMoreClick);
     bigPicture.classList.remove('hidden');
+    commentsLoader.focus();
   };
 
   var closeBigPicture = function () {
@@ -33,15 +33,16 @@
     }
   };
 
-  var onBigPictureCancelClick = function () {
+  var onBigPictureCancelClick = function (evt) {
+    evt.preventDefault();
     closeBigPicture();
   };
 
-  var createCommentatorAvatar = function () {
+  var createCommentAvatar = function () {
     var result = document.createElement('img');
     result.classList.add('social__picture');
     result.src = 'img/avatar-' + window.util.getRandom(1, 6) + '.svg';
-    result.alt = 'Аватар комментатора';
+    result.alt = 'Аватар автора фотографии';
     result.width = '35';
     result.height = '35';
     return result;
@@ -56,7 +57,7 @@
 
   var createComment = function (comment) {
     var result = document.createElement('li');
-    var avatar = createCommentatorAvatar();
+    var avatar = createCommentAvatar();
     var textComment = createCommentText(comment.message);
     result.classList.add('social__comment');
     result.appendChild(avatar);
@@ -64,21 +65,45 @@
     return result;
   };
 
+  var toggleCommentsLoader = function (commentsDisplayed) {
+    if (pictureComments.length <= commentsDisplayed.length) {
+      commentsLoader.classList.add('hidden');
+    } else {
+      commentsLoader.classList.remove('hidden');
+    }
+  };
+
+  var updateSocialCommentCount = function (commentsDisplayed) {
+    socialCommentCount.textContent = commentsDisplayed.length + ' из ' + pictureComments.length + ' комментариев';
+  };
+
+  var updateControls = function () {
+    var commentsDisplayed = socialComments.querySelectorAll('.social__comment');
+    toggleCommentsLoader(commentsDisplayed);
+    updateSocialCommentCount(commentsDisplayed);
+  };
+
   var createComments = function (commentsData) {
-    window.util.removeChildElements(socialComments.querySelectorAll('.social__comment'), socialComments);
     var commentsElements = document.createDocumentFragment();
-    for (var i = 0; i <= commentsData.length - 1; i++) {
-      commentsElements.appendChild(createComment(commentsData[i]));
+    for (var i = commentsData; i <= commentsData + 4; i++) {
+      if (i > pictureComments.length - 1) {
+        break;
+      }
+      var comment = createComment(pictureComments[i]);
+      commentsElements.appendChild(comment);
     }
     socialComments.appendChild(commentsElements);
+    updateControls();
   };
 
   var dataBigPicture = function (picture) {
     bigPictureImg.src = picture.url;
-    likesCount.textContent = picture.likesCount;
+    likesCount.textContent = picture.likes;
     commentsCount.textContent = picture.comments.length;
     socialCaption.textContent = picture.description;
-    createComments(picture.comments);
+    window.util.removeChildElements(socialComments.querySelectorAll('.social__comment'), socialComments);
+    pictureComments = picture.comments;
+    createComments(0);
   };
 
   var findDataPicture = function (target) {
@@ -92,6 +117,12 @@
   var onPictureClick = function (evt) {
     evt.preventDefault();
     openBigPicture(findDataPicture(evt.currentTarget.querySelector('.picture__img')));
+  };
+
+  var onShowMoreClick = function (evt) {
+    evt.preventDefault();
+    var allCommentsPage = socialComments.querySelectorAll('.social__comment');
+    createComments(allCommentsPage.length);
   };
 
   window.bigPicture = {

@@ -8,9 +8,11 @@
     var result = Math.random() * (max - min) + min;
     return Number(result.toFixed(0));
   };
+
   var isEscEvent = function (evt) {
     return evt.keyCode === ESC_KEYCODE;
   };
+
   var isEnterEvent = function (evt) {
     return evt.keyCode === ENTER_KEYCODE;
   };
@@ -58,6 +60,29 @@
     };
   };
 
+  var getRandomDigitalRange = function (rangeMax, number) {
+    var result = [];
+    for (var i = 0; result.length <= number - 1; i++) {
+      var randomItem = getRandom(0, rangeMax);
+      if (result.indexOf(randomItem) < 0) {
+        result.push(randomItem);
+      }
+      if (i > rangeMax) {
+        break;
+      }
+    }
+    return result;
+  };
+
+  var getRandomElements = function (data, number) {
+    var randomIndex = getRandomDigitalRange(data.length - 1, number);
+    var result = [];
+    for (var i = 0; i <= randomIndex.length - 1; i++) {
+      result.push(data[randomIndex[i]]);
+    }
+    return result;
+  };
+
   window.util = {
     ESC_KEYCODE: ESC_KEYCODE,
     getRandom: getRandom,
@@ -67,6 +92,7 @@
     removeChildElements: removeChildElements,
     removeClassBlockArray: removeClassBlockArray,
     mixArray: mixArray,
-    debounce: debounce
+    debounce: debounce,
+    getRandomElements: getRandomElements
   };
 })();

@@ -29,6 +29,7 @@
   var onLoadPicture = function (images) {
     window.data.uploadedImages = images;
     renderPictures(images);
+    window.sorting.showSortButtons();
   };
 
   window.backend.load(onLoadPicture);
