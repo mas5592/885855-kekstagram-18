@@ -7,7 +7,7 @@
 
   var onButtonSortClick = function (evt) {
     evt.preventDefault();
-    toggleFiltersButtonActive(evt.target);
+    switchActiveButton(evt.target);
     switch (evt.target.id) {
       case 'filter-popular': sortPopularPictures();
         break;
@@ -43,7 +43,7 @@
     window.data.renderPictures(sort);
   });
 
-  var toggleFiltersButtonActive = function (button) {
+  var switchActiveButton = function (button) {
     if (!button.classList.contains(imgFiltersButtonActive)) {
       window.util.removeClassBlockArray(imgFiltersButton, imgFiltersButtonActive);
       button.classList.add(imgFiltersButtonActive);

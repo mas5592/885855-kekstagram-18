@@ -17,12 +17,14 @@
     window.util.removeChildElements(picturesBlock.querySelectorAll('.picture'), picturesBlock);
   };
 
-  var renderPictures = function (dataPicture) {
+  var renderPictures = function (dataPictures) {
     removePicture();
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i <= dataPicture.length - 1; i++) {
-      fragment.appendChild(generatePicture(dataPicture[i]));
-    }
+
+    dataPictures.forEach(function (element) {
+      fragment.appendChild(generatePicture(element));
+    });
+
     picturesBlock.appendChild(fragment);
   };
 

@@ -453,13 +453,13 @@ main {
   text-align: center;
   vertical-align: middle;
 
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
   border: 0;
 }
 
 .scale__control:hover,
 .scale__control:focus {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .scale__control:active {
@@ -595,7 +595,7 @@ main {
 .effect-level__pin {
   position: absolute;
   top: 50%;
-  left: 20%;
+  left: 100%;
   z-index: 1;
 
   width: 18px;
@@ -615,7 +615,7 @@ main {
 .effect-level__depth {
   position: absolute;
 
-  width: 20%;
+  width: 100%;
   height: 100%;
 
   background-color: #ffe753;
@@ -956,7 +956,6 @@ main {
 
   margin: 0;
   padding: 0;
-  padding-top: 20px;
 }
 
 .social__comment {
@@ -976,6 +975,7 @@ main {
 .social__comment-count {
   padding-top: 20px;
   padding-left: 65px;
+  padding-bottom: 20px;
 }
 
 .social__comments-loader {

@@ -13,8 +13,6 @@
       }
     });
 
-    xhr.timeout = 10000;
-
     xhr.open('GET', URL + '/data');
     xhr.send();
   };

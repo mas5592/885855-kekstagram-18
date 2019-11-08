@@ -39,13 +39,13 @@
     imgUploadPreview.classList = 'img-upload__preview';
   };
 
-  var editorFormOnDefault = function () {
+  var returnFormOnDefault = function () {
     imgUploadPreview.style = '';
     resetImgClassList();
     filterRange.classList.add('hidden');
   };
 
-  var filterHandler = function (evt) {
+  var switchFilterHandler = function (evt) {
     if (evt) {
       filterRange.classList.remove('hidden');
     } else {
@@ -57,7 +57,7 @@
     if (evt.target.name === 'effect') {
       imgUploadPreview.className = 'img-upload__preview effects__preview--' + evt.target.value;
       switcher(evt.target.value, FILTER_DEFAULT_VALUE);
-      filterHandler(evt.target.value !== 'none');
+      switchFilterHandler(evt.target.value !== 'none');
       effectLevel.value = FILTER_DEFAULT_VALUE;
       effectLevelDepth.style.width = FILTER_DEFAULT_VALUE + '%';
       effectLevelPin.style.left = FILTER_DEFAULT_VALUE + '%';
@@ -96,7 +96,7 @@
 
   window.filters = {
     onEffectChange: onEffectChange,
-    editorFormOnDefault: editorFormOnDefault,
+    returnFormOnDefault: returnFormOnDefault,
     effectLevelDepth: effectLevelDepth
   };
 })();

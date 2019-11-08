@@ -3,7 +3,7 @@
 (function () {
   var formImgEditing = document.querySelector('.img-upload__overlay');
   var btnCloseImgEditing = formImgEditing.querySelector('.img-upload__cancel');
-  var textDescription = document.querySelector('.text_description');
+  var textDescription = document.querySelector('.text__description');
   var hashtagsInput = document.querySelector('.text__hashtags');
   var filterList = document.querySelector('.effects__list');
   var uploadFile = document.querySelector('#upload-file');
@@ -13,7 +13,7 @@
     formImgEditing.classList.remove('hidden');
     filterList.addEventListener('change', window.filters.onEffectChange);
     document.addEventListener('keydown', onEscPress);
-    window.filters.editorFormOnDefault();
+    window.filters.returnFormOnDefault();
     hashtagsInput.addEventListener('change', window.validation.onValidateFormHashtag);
   };
 
