@@ -3,20 +3,24 @@
 (function () {
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+  var DEBOUNCE_INTERVAL = 500;
+  var lastTimeout = null;
 
   var getRandom = function (min, max) {
     var result = Math.random() * (max - min) + min;
     return Number(result.toFixed(0));
   };
+
   var isEscEvent = function (evt) {
     return evt.keyCode === ESC_KEYCODE;
   };
+
   var isEnterEvent = function (evt) {
     return evt.keyCode === ENTER_KEYCODE;
   };
 
   var addEventHandler = function (elements, event, handler) {
-    for (var i = 0; i <= elements.length - 1; i++) {
+    for (var i = 0; i < elements.length; i++) {
       elements[i].addEventListener(event, handler);
     }
   };
@@ -27,26 +31,13 @@
     }
   };
 
-  var mixArray = function (array) {
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-    return array;
-  };
-
   var removeClassBlockArray = function (elements, cssClass) {
     elements.forEach(function (element) {
       element.classList.remove(cssClass);
     });
   };
-  var DEBOUNCE_INTERVAL = 500;
 
   var debounce = function (cb) {
-    var lastTimeout = null;
-
     return function () {
       var parameters = arguments;
       if (lastTimeout) {
@@ -58,6 +49,29 @@
     };
   };
 
+  var getRandomDigitalRange = function (rangeMax, number) {
+    var result = [];
+    for (var i = 0; result.length <= number - 1; i++) {
+      var randomItem = getRandom(0, rangeMax);
+      if (result.indexOf(randomItem) < 0) {
+        result.push(randomItem);
+      }
+      if (i > rangeMax) {
+        break;
+      }
+    }
+    return result;
+  };
+
+  var getRandomElements = function (data, number) {
+    var randomIndex = getRandomDigitalRange(data.length, number);
+    var result = [];
+    for (var i = 0; i < randomIndex.length; i++) {
+      result.push(data[randomIndex[i]]);
+    }
+    return result;
+  };
+
   window.util = {
     ESC_KEYCODE: ESC_KEYCODE,
     getRandom: getRandom,
@@ -66,7 +80,7 @@
     addEventHandler: addEventHandler,
     removeChildElements: removeChildElements,
     removeClassBlockArray: removeClassBlockArray,
-    mixArray: mixArray,
-    debounce: debounce
+    debounce: debounce,
+    getRandomElements: getRandomElements
   };
 })();

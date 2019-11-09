@@ -2,25 +2,29 @@
 
 (function () {
   var formImgEditing = document.querySelector('.img-upload__overlay');
-  var imgUploadInput = document.querySelector('.img-upload__input');
   var btnCloseImgEditing = formImgEditing.querySelector('.img-upload__cancel');
-  var textDescription = document.querySelector('.text_description');
+  var textDescription = document.querySelector('.text__description');
+  var hashtagsInput = document.querySelector('.text__hashtags');
   var filterList = document.querySelector('.effects__list');
+  var uploadFile = document.querySelector('#upload-file');
+  var form = document.querySelector('.img-upload__form');
 
   var openPopup = function () {
     formImgEditing.classList.remove('hidden');
     filterList.addEventListener('change', window.filters.onEffectChange);
     document.addEventListener('keydown', onEscPress);
-    window.filters.editorFormOnDefault();
-    window.validation.hashtagsInput.addEventListener('change', window.validation.onValidateFormHashtag);
+    window.filters.returnFormOnDefault();
+    hashtagsInput.addEventListener('change', window.validation.onValidateFormHashtag);
   };
 
   var closePopup = function () {
     formImgEditing.classList.add('hidden');
     document.removeEventListener('keydown', onEscPress);
+    resetUploadFileValue();
     filterList.removeEventListener('click', window.filters.onEffectChange);
-    window.validation.hashtagsInput.removeEventListener('change', window.validation.onValidateFormHashtag);
+    hashtagsInput.removeEventListener('change', window.validation.onValidateFormHashtag);
     window.scale.resetScaleControlValue();
+    form.reset();
   };
 
   var getActiveElement = function () {
@@ -28,8 +32,8 @@
     if (document.activeElement === textDescription) {
       activeElement = textDescription;
     }
-    if (document.activeElement === window.validation.hashtagsInput) {
-      activeElement = window.validation.hashtagsInput;
+    if (document.activeElement === hashtagsInput) {
+      activeElement = hashtagsInput;
     }
     return activeElement;
   };
@@ -40,15 +44,21 @@
     }
   };
 
-  imgUploadInput.addEventListener('change', function () {
-    openPopup();
-  });
-
   btnCloseImgEditing.addEventListener('click', function () {
     closePopup();
   });
 
+  uploadFile.addEventListener('change', function () {
+    openPopup();
+    window.imgUpload.onFileChooserChange();
+  });
+
+  var resetUploadFileValue = function () {
+    uploadFile.value = null;
+  };
+
   window.form = {
-    formImgEditing: formImgEditing
+    formImgEditing: formImgEditing,
+    closePopup: closePopup
   };
 })();

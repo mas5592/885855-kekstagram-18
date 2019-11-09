@@ -1,15 +1,16 @@
 'use strict';
 
 (function () {
+
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
   var effectLevelLine = document.querySelector('.effect-level__line');
   var FILTER_DEFAULT_VALUE = 100;
   var imgUploadPreview = document.querySelector('.img-upload__preview ');
-
   var filterRange = document.querySelector('.img-upload__effect-level');
   var effectLevel = document.querySelector('[name="effect-level"]');
-
+  var FILTER_PERCENT = 100;
+  var FILTER_WIDTH = effectLevelPin.offsetWidth;
 
   var switcher = function (value, percent) {
     switch (value) {
@@ -28,16 +29,23 @@
       case 'heat':
         imgUploadPreview.style.filter = 'brightness(' + 3 / 100 * percent + ')';
         break;
+      default:
+        resetImgClassList();
+        imgUploadPreview.style.filter = '';
     }
   };
 
-  var editorFormOnDefault = function () {
+  var resetImgClassList = function () {
+    imgUploadPreview.classList = 'img-upload__preview';
+  };
+
+  var returnFormOnDefault = function () {
     imgUploadPreview.style = '';
-    imgUploadPreview.className = 'img-upload__effect-level';
+    resetImgClassList();
     filterRange.classList.add('hidden');
   };
 
-  var filterHandler = function (evt) {
+  var switchFilterHandler = function (evt) {
     if (evt) {
       filterRange.classList.remove('hidden');
     } else {
@@ -47,9 +55,9 @@
 
   var onEffectChange = function (evt) {
     if (evt.target.name === 'effect') {
-      imgUploadPreview.className = 'img-upload__effect-lavel effects__preview--' + evt.target.value;
+      imgUploadPreview.className = 'img-upload__preview effects__preview--' + evt.target.value;
       switcher(evt.target.value, FILTER_DEFAULT_VALUE);
-      filterHandler(evt.target.value !== 'none');
+      switchFilterHandler(evt.target.value !== 'none');
       effectLevel.value = FILTER_DEFAULT_VALUE;
       effectLevelDepth.style.width = FILTER_DEFAULT_VALUE + '%';
       effectLevelPin.style.left = FILTER_DEFAULT_VALUE + '%';
@@ -59,10 +67,6 @@
   var getX = function (elem) {
     return elem.getBoundingClientRect().left;
   };
-
-  var FILTER_PERCENT = 100;
-  var FILTER_WIDTH = effectLevelPin.offsetWidth;
-
 
   var onEffectPinMouseMove = function (moveEvt) {
     var move = moveEvt.pageX + (FILTER_WIDTH / 2) - getX(effectLevelLine);
@@ -92,7 +96,7 @@
 
   window.filters = {
     onEffectChange: onEffectChange,
-    editorFormOnDefault: editorFormOnDefault,
-
+    returnFormOnDefault: returnFormOnDefault,
+    effectLevelDepth: effectLevelDepth
   };
 })();

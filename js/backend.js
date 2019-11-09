@@ -13,8 +13,6 @@
       }
     });
 
-    xhr.timeout = 10000;
-
     xhr.open('GET', URL + '/data');
     xhr.send();
   };
@@ -35,10 +33,10 @@
       onError('Произошла ошибка соединения');
     });
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не смог быть выполнен за ' + xhr.timeout + 'мс');
+      onError('Запрос не был выполнен за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 1000;
+    xhr.timeout = 10000;
 
     xhr.open('POST', URL);
     xhr.send(data);

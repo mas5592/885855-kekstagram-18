@@ -63,7 +63,7 @@
     }
 
     hashtagsInput.setCustomValidity(validityMessage);
-    hashtagsInput.style.boxShadow = (validityMessage.length > 0) ? '0 0 0 4px orange' : 'none';
+    hashtagsInput.style.boxShadow = (validityMessage.length > 0) ? '0 0 0 4px red' : 'none';
   };
 
   window.validation = {
