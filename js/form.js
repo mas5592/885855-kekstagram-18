@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var formImgEditing = document.querySelector('.img-upload__overlay');
   var btnCloseImgEditing = formImgEditing.querySelector('.img-upload__cancel');
   var textDescription = document.querySelector('.text__description');
@@ -24,6 +25,7 @@
     filterList.removeEventListener('click', window.filters.onEffectChange);
     hashtagsInput.removeEventListener('change', window.validation.onValidateFormHashtag);
     window.scale.resetScaleControlValue();
+    window.validation.inputValidationClear();
     form.reset();
   };
 

@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+
   var picturesBlock = document.querySelector('.pictures');
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var uploadedImages = [];

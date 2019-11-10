@@ -3,8 +3,14 @@
 (function () {
 
   var hashtagsInput = document.querySelector('.text__hashtags');
+  var uploadForm = document.querySelector('#upload-select-image');
   var MAX_LENGTH_HASHTAG = 20;
   var MAX_NUMBER_HASHTAG = 5;
+
+  var setValidHashtagsInput = function () {
+    hashtagsInput.style.outline = '';
+    hashtagsInput.setCustomValidity('');
+  };
 
   var checkFirstSymbol = function (hashtag) {
     return hashtag.some(function (it) {
@@ -62,12 +68,23 @@
       validityMessage += 'Нельзя указать больше пяти хэш-тегов.';
     }
 
-    hashtagsInput.setCustomValidity(validityMessage);
-    hashtagsInput.style.boxShadow = (validityMessage.length > 0) ? '0 0 0 4px red' : 'none';
+    if (validityMessage !== '') {
+      hashtagsInput.style.outline = '3px solid red';
+      hashtagsInput.setCustomValidity(validityMessage);
+      return;
+    }
+
+    setValidHashtagsInput();
+  };
+
+  var inputValidationClear = function () {
+    setValidHashtagsInput();
+    uploadForm.reset();
   };
 
   window.validation = {
     onValidateFormHashtag: onValidateFormHashtag,
-    hashtagsInput: hashtagsInput
+    hashtagsInput: hashtagsInput,
+    inputValidationClear: inputValidationClear
   };
 })();

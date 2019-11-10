@@ -21,15 +21,12 @@
   var onScaleControlValue = function (evt) {
     var changeScaleControlValue = parseInt(scaleControlValue.value, 10);
 
-
-    if (evt.target.classList.contains('scale__control--bigger')) {
-      if (changeScaleControlValue >= MIN__SCALE && changeScaleControlValue < MAX_SCALE) {
-        changeScaleControlValue += MOVE;
-      }
-    } else if (evt.target.classList.contains('scale__control--smaller')) {
-      if (changeScaleControlValue > MIN__SCALE && changeScaleControlValue <= MAX_SCALE) {
-        changeScaleControlValue -= MOVE;
-      }
+    if (evt.target.classList.contains('scale__control--bigger')
+      && changeScaleControlValue >= MIN__SCALE && changeScaleControlValue < MAX_SCALE) {
+      changeScaleControlValue += MOVE;
+    } else if (evt.target.classList.contains('scale__control--smaller')
+      && changeScaleControlValue > MIN__SCALE && changeScaleControlValue <= MAX_SCALE) {
+      changeScaleControlValue -= MOVE;
     }
 
     scaleControlValue.value = changeScaleControlValue + '%';

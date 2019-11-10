@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
   var DEBOUNCE_INTERVAL = 500;
@@ -64,12 +65,10 @@
   };
 
   var getRandomElements = function (data, number) {
-    var randomIndex = getRandomDigitalRange(data.length, number);
-    var result = [];
-    for (var i = 0; i < randomIndex.length; i++) {
-      result.push(data[randomIndex[i]]);
-    }
-    return result;
+    var randomIndexes = getRandomDigitalRange(data.length - 1, number);
+    return randomIndexes.map(function (randomIndex) {
+      return data[randomIndex];
+    });
   };
 
   window.util = {

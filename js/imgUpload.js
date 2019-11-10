@@ -9,8 +9,10 @@
   var miniatures = document.querySelectorAll('.effects__preview');
 
   var renderEffectMiniature = function (userFile) {
+    var changeUserFile = 'url(' + userFile + ')';
+
     miniatures.forEach(function (element) {
-      element.style.backgroundImage = 'URL' + '(' + userFile + ')';
+      element.style.backgroundImage = changeUserFile;
     });
   };
 

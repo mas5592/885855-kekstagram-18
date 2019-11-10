@@ -73,8 +73,7 @@
     var newPinPosition = Math.floor(move / effectLevelLine.offsetWidth * FILTER_PERCENT);
     if (newPinPosition < 0) {
       newPinPosition = 0;
-    }
-    if (newPinPosition > FILTER_PERCENT) {
+    } else if (newPinPosition > FILTER_PERCENT) {
       newPinPosition = FILTER_PERCENT;
     }
 

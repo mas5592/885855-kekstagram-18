@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var imgFilters = document.querySelector('.img-filters');
   var imgFiltersButton = imgFilters.querySelectorAll('.img-filters__button');
   var imgFiltersButtonActive = 'img-filters__button--active';
