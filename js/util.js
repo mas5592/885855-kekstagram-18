@@ -51,24 +51,26 @@
   };
 
   var getRandomDigitalRange = function (rangeMax, number) {
-    var result = [];
-    for (var i = 0; result.length <= number - 1; i++) {
-      var randomItem = getRandom(0, rangeMax);
-      if (result.indexOf(randomItem) < 0) {
-        result.push(randomItem);
+    var results = [];
+    for (var i = 0; results.length < number; i++) {
+      var randomItem = getRandom(0, rangeMax - 1);
+      if (results.indexOf(randomItem) === -1) {
+        results.push(randomItem);
       }
-      if (i > rangeMax) {
+      if (i > rangeMax - 1) {
         break;
       }
     }
-    return result;
+    return results;
   };
 
   var getRandomElements = function (data, number) {
-    var randomIndexes = getRandomDigitalRange(data.length - 1, number);
-    return randomIndexes.map(function (randomIndex) {
-      return data[randomIndex];
+    var randomIndex = getRandomDigitalRange(data.length, number);
+    var result = [];
+    randomIndex.forEach(function (el) {
+      result.push(data[el]);
     });
+    return result;
   };
 
   window.util = {
